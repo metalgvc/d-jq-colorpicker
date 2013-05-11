@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>djqpicker example</title>
+	<title>dpicker example</title>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 	<script src="../jquery.dpicker.js"></script>
 </head>
@@ -9,22 +9,45 @@
 <script>
 $(document).ready(function(){
 	$('#picker').dpicker();
+	
+	// simply get obj color 
+	//console.log($.dpicker('getColor', $('#divTest')));
+	
+	
+	/*$('#picker').dpicker({
+		onMouseMove: function(e){
+			console.log(e);
+		},
+		
+		onSelectColor: function(e){
+			var color = $.dpicker('getColor', e.target);
+			// do something ...
+			alert(color);
+		}
+	});*/
+	
 });
 </script>
 
-<div id="picker" style="width:20px; height:20px; background-color: black;"></div>
+<div style="border: 1px solid #dd0000;" id="picker">
+	<div style="clear:both;"></div>
+	<div style="width:20px; height:20px; background-color: black; float:left;"></div>
+	<div style="float:left;">: <b>click for activate/deactivate document picker</b></div>
+	<div style="clear:both;"></div>
+</div>
+<div style="clear:both;"></div>
 
 <br />
 
-<div style="background-color: #999999;">
-	TEXT <span style="color:#009906;">BLOCK</span>
+<div style="background-color: #999999;" id="divTest">
+	TEXT <span style="color:#009906;" id="spanTest">BLOCK</span>
 </div>
 
 <div>
 	<img src="https://www.google.com.ua/images/srpr/logo4w.png" />
 </div>
 
-<a href="https://www.google.com">test link</a>
+<a id="lnkTest" href="https://www.google.com">test link</a>
 
 </body>
 </html>
