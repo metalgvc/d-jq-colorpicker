@@ -1,3 +1,5 @@
+// TODO: get color from background img elements
+
 (function( $ ){
 	
 	var plugin = {
@@ -86,8 +88,22 @@
 				if(typeof plugin.config.onSelectColor == 'function'){
 					plugin.config.onSelectColor(e);
 				}else{
-					plugin._status = (plugin._status == plugin.const.STATUS_COLOR_SELECTED)
-						? plugin.const.STATUS_COLOR_NOT_SELECTED : plugin.const.STATUS_COLOR_SELECTED;
+					switch(plugin._status){
+						case plugin.const.STATUS_COLOR_SELECTED:
+							plugin._status = plugin.const.STATUS_COLOR_NOT_SELECTED;
+							$('input#djqcpOutText').css({
+								border: ''
+							});
+							break;
+
+						case plugin.const.STATUS_COLOR_NOT_SELECTED:
+							plugin._status = plugin.const.STATUS_COLOR_SELECTED;
+							var bcolor = (plugin._lastColor == '') ? '#cbb' : plugin._lastColor;
+							$('input#djqcpOutText').css({
+								border: '2px solid '+ bcolor
+							});
+							break;
+					}
 					plugin.onSelectColor(e);
 				}
 			});
@@ -167,12 +183,12 @@
 			if($(event.target).prop('tagName').toLowerCase() == 'img'){
 				color = plugin._getImgColor(event);
 			}else{
-				color = plugin._getTextElementColor(event.target);
+				color = plugin._getTextElementColor(event);
 			}
 
 			var rgb;
 			if(	typeof color == 'string' 
-				&& (rgb = color.match(/rgb(a)?\(([0-9]+)\,\s?([0-9]+)\,\s?([0-9]+)(,\s?[0-9]+)?\)/))
+				&& (rgb = plugin._rgbUnpack(color))
 			){
 				color = plugin._rgb2hex(rgb[2], rgb[3], rgb[4]);
 			}
@@ -211,22 +227,43 @@
 		},
 		
 		// TODO:
-		_getTextElementColor: function(obj){
-			var color = undefined;
-			
-			if(color == undefined){
-				color = $(obj).css('background-color');
+		_getTextElementColor: function(e){
+			var obj = e.target;
+			var color = '', rgb = '';
+
+			if(color == ''){
+				color = obj.style.color;
 			}
-			
-			if(color == undefined){
-				color = $(obj).css('border-color');
+
+			if(color == ''){
+				color = obj.style.backgroundColor;
 			}
-			
-			if(color == undefined){
+
+			if(color == ''){
 				color = $(obj).css('color');
+				rgb = plugin._rgbUnpack(color);
+				if(rgb.length >= 5
+					&& rgb[2] == 0
+					&& rgb[3] == 0
+					&& rgb[4] == 0
+				){
+					color = '';
+				}
 			}
-			
-			if(color == undefined){
+
+			if(color == ''){
+				color = $(obj).css('background-color');
+				rgb = plugin._rgbUnpack(color);
+				if(rgb.length >= 5
+					&& rgb[2] == 0
+					&& rgb[3] == 0
+					&& rgb[4] == 0
+				){
+					color = '';
+				}
+			}
+
+			if(color == ''){
 				color = '#ffffff';
 			}
 			
@@ -240,6 +277,10 @@
 			g = hexDigits[(g - g % 16) / 16] + hexDigits[g % 16];
 			b = hexDigits[(b - b % 16) / 16] + hexDigits[b % 16];
 			return '#'+ r + g + b;
+		},
+
+		_rgbUnpack: function(rgbStr){
+			return rgbStr.match(/rgb(a)?\(([0-9]+)\,\s?([0-9]+)\,\s?([0-9]+)(,\s?[0-9]+)?\)/);
 		}
 	};
 
