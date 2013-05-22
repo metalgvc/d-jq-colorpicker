@@ -44,10 +44,28 @@ $(document).ready(function(){
 </div>
 
 <div>
-	<img src="./test_img.jpg" />
+	<div style="float:left;">
+		<img src="./test_img.jpg" />
+	</div>
+
+	<div style="float:left; width: 300px; height:190px; background:url('./bg.png') no-repeat center center;">
+		<span style="color:#f00;">b</span>
+		<span style="color:#0f0;">a</span>
+		<span style="color:#00f;">c</span>
+		<span style="color:#00f;background-color:#ff0;">k</span>
+		<span style="background-color:#0ff;">g</span>
+		round:url('./bg.png') no-repeat center center
+	</div>
+	
+	<div style="float:left;width:10px;height:190px;"></div>
+	
+	<div style="float:left; width: 300px; height:190px; background-image:url('./bg.png');">background-image:url('./bg.png')</div>
 </div>
 
+<div style="clear:both;"></div>
+
 <a id="lnkTest" href="https://www.google.com">test link</a>
+
 
 </body>
 </html>

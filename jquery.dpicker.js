@@ -233,10 +233,16 @@
 
 			if(color == ''){
 				color = obj.style.color;
+				if(!plugin._is_color(color)){
+					color = '';
+				}
 			}
 
 			if(color == ''){
 				color = obj.style.backgroundColor;
+				if(!plugin._is_color(color)){
+					color = '';
+				}
 			}
 
 			if(color == ''){
@@ -262,7 +268,7 @@
 					color = '';
 				}
 			}
-
+			
 			if(color == ''){
 				color = '#ffffff';
 			}
@@ -281,6 +287,18 @@
 
 		_rgbUnpack: function(rgbStr){
 			return rgbStr.match(/rgb(a)?\(([0-9]+)\,\s?([0-9]+)\,\s?([0-9]+)(,\s?[0-9]+)?\)/);
+		},
+
+		_is_color: function(color){
+			if(typeof color === 'string'
+				&& (
+					color.match(/rgb(a)?\(([0-9]+)\,\s?([0-9]+)\,\s?([0-9]+)(,\s?[0-9]+)?\)/)
+					|| color.match(/^#[0-9]{3}$|^#[0-9]{6}$/)
+				)
+			){
+				return true;
+			}
+			return false;
 		}
 	};
 
